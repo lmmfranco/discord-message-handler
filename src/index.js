@@ -106,14 +106,12 @@ class ActionExecutor {
     }
 
     then(callback) {
-        callback(this.discordMessage.content);
+        callback(this.discordMessage);
     }
 
     do(callback, minArgs, errorMessage) {
         var minimumArgs = minArgs || 0;
-
-        let message = this.discordMessage.content.trim();
-        let args = message.split(" ");
+        let args = this.discordMessage.content.trim().split(" ");
 
         // Remove command from args
         args.splice(0,1);
@@ -123,7 +121,7 @@ class ActionExecutor {
         if(args.length < minimumArgs && errorMessage) {
             this.replySameChannel(errorMessage);
         } else {
-            callback(args, rawArgs, message);
+            callback(args, rawArgs, this.discordMessage);
         }
     }
 

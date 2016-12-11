@@ -28,7 +28,7 @@ MessageHandler.whenMessageStartsWith("help").then(message => doSomething(message
 ###Command handler
 ```js
 MessageHandler.onCommand("/doit").do((args, rawArgs, message) => {
-    doSomething(args);
+    message.channel.sendMessage(`Doing something for ${message.author}...`)
 });
 ```
 
