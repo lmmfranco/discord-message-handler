@@ -44,5 +44,12 @@ MessageHandler
     });
 ```
 
+###Case sensitivity
+In case you want message filters to be case sensitive you just need to call this function once:
+```js
+MessageHandler.setCaseSensitive(true);
+```
+By default all message filters are case insensitive. (false)
+
 ##Contributing
 Feel free to send a pull request or open an issue if something is not working as intended or you belive could be better.
