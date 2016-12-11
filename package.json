@@ -1,0 +1,27 @@
+{
+  "name": "discord-message-handler",
+  "version": "1.0.0",
+  "description": "Message and command handler for discord.js bots and applications.",
+  "main": "./src/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmmfranco/discord-message-handler.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "command",
+    "message",
+    "chat",
+    "discordjs"
+  ],
+  "author": "lmmfranco",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/lmmfranco/discord-message-handler/issues"
+  },
+  "homepage": "https://github.com/lmmfranco/discord-message-handler#readme"
+}
