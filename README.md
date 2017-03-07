@@ -51,5 +51,13 @@ MessageHandler.setCaseSensitive(true);
 ```
 By default all message filters are case insensitive. (false)
 
+###Logging
+To enable logging call `MessageHandler.enableLogging()` and pass a function to handle logs.
+```js
+MessageHandler.enableLogging((filterType, filter, message) => {
+    console.log(`${new Date().toISOString()} ${filterType}: ${filter} - "${message.content}"`);
+});
+```
+
 ##Contributing
 Feel free to send a pull request or open an issue if something is not working as intended or you belive could be better.

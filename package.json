@@ -1,6 +1,6 @@
 {
   "name": "discord-message-handler",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Message and command handler for discord.js bots and applications.",
   "main": "./src/index",
   "scripts": {

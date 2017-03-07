@@ -13,7 +13,7 @@ const ActionType = {
     REPLY_SOMETIMES: 1,
     REPLY_ONE: 2,
     THEN: 3,
-    DO: 4 
+    DO: 4
 };
 
 class Utils {
@@ -27,7 +27,16 @@ class Utils {
     }
 
     static arrayToLower(array) {
-        return array.map(str => str.toLowerCase() );
+        return array.map(str => str.toLowerCase());
+    }
+
+    static getKeyByValue(obj, value) {
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                if (obj[prop] === value)
+                    return prop;
+            }
+        }
     }
 }
 
@@ -68,7 +77,7 @@ class HandlerBuilder {
 
     do(_callback) {
         this.handler.action = ActionType.DO;
-        this.handler.callback = _callback;        
+        this.handler.callback = _callback;
     }
 
     minArgs(count) {
@@ -114,11 +123,11 @@ class ActionExecutor {
         let args = this.discordMessage.content.trim().split(" ");
 
         // Remove command from args
-        args.splice(0,1);
+        args.splice(0, 1);
 
         let rawArgs = args.join(" ");
 
-        if(args.length < minimumArgs && errorMessage) {
+        if (args.length < minimumArgs && errorMessage) {
             this.replySameChannel(errorMessage);
         } else {
             callback(args, rawArgs, this.discordMessage);
@@ -131,11 +140,24 @@ class MessageHandler {
 
     constructor() {
         this.handlers = [];
-        this.caseSensitive = false; 
+        this.caseSensitive = false;
+        this.logFn = null;
+    }
+
+    log(messageType, filter, message) {
+        let msgType = Utils.getKeyByValue(MessageType, messageType);
+
+        if (this.logFn && typeof this.logFn == "function") {
+            this.logFn(msgType, filter, message);
+        }
     }
 
     setCaseSensitive(isCaseSensitive) {
         this.caseSensitive = isCaseSensitive;
+    }
+
+    enableLogging(logFn) {
+        this.logFn = logFn;
     }
 
     whenMessageContains(text) {
@@ -190,13 +212,13 @@ class MessageHandler {
                 let message;
                 let query;
 
-                if(this.caseSensitive) {
+                if (this.caseSensitive) {
                     message = discordMessage.content;
                     query = handler.query;
                 } else {
                     message = discordMessage.content.toLowerCase();
 
-                    if (Array.isArray(handler.query) ) {
+                    if (Array.isArray(handler.query)) {
                         query = Utils.arrayToLower(handler.query);
                     } else {
                         query = handler.query.toLowerCase()
@@ -222,6 +244,7 @@ class MessageHandler {
                 }
             })
             .forEach(handler => {
+                this.log(handler.type, handler.query, discordMessage);
                 let executor = new ActionExecutor(discordMessage);
 
                 switch (handler.action) {
@@ -239,7 +262,7 @@ class MessageHandler {
                         break;
                     case ActionType.DO:
                         executor.do(handler.callback, handler.minArgs, handler.errorMessage);
-                        break;                        
+                        break;
                     default:
                         break;
                 }
