@@ -30,6 +30,11 @@ class Utils {
         return array.map(str => str.toLowerCase());
     }
 
+    static startsWithWord(str, search) {
+        return ((str.length == search.length) && (str == search)) ||
+            ((str.length > search.length) && (str.startsWith(search + ' ')))
+    }
+
     static getKeyByValue(obj, value) {
         for (var prop in obj) {
             if (obj.hasOwnProperty(prop)) {
@@ -82,6 +87,15 @@ class HandlerBuilder {
 
     minArgs(count) {
         this.handler.minArgs = count;
+        return this;
+    }
+
+    alias(alt) {
+        if (this.handler.aliases) {
+            this.handler.aliases.push(alt);
+        } else {
+            this.handler.aliases = [alt];
+        }
         return this;
     }
 
@@ -236,7 +250,13 @@ class MessageHandler {
                         return query.filter(queryParam => message.split(" ").indexOf(queryParam) >= 0).length > 0;
                     case MessageType.MESSAGE_STARTS_WITH:
                     case MessageType.COMMAND:
-                        return message.startsWith(query);
+                        if (handler.aliases) {
+                            handler.aliases.push(query);
+                            let check = handler.aliases.map(q => Utils.startsWithWord(message, q));
+                            return check.reduce((a, b) => a || b);
+                        } else {
+                            return Utils.startsWithWord(message, query);
+                        }
                     case MessageType.MESSAGE_ENDS_WITH:
                         return message.endsWith(query);
                     default:

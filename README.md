@@ -32,6 +32,13 @@ MessageHandler.onCommand("/doit").do((args, rawArgs, message) => {
 });
 ```
 
+### Commands with alias
+```js
+MessageHandler.onCommand("/information").alias("/info").alias("/i").do((args) => {
+    doSomething(args[0]);
+});
+```
+
 ### Commands with usage info
 ```js
 MessageHandler 
