@@ -1,3 +1,8 @@
+<p>
+    <a href="https://www.npmjs.com/package/discord-message-handler"><img src="https://img.shields.io/npm/v/discord-message-handler.svg?maxAge=3600" alt="NPM version" /></a>
+    <a href="https://www.npmjs.com/package/discord-message-handler"><img src="https://img.shields.io/npm/dt/discord-message-handler.svg?maxAge=3600" alt="NPM downloads" /></a>
+</p>
+
 ## About
 **discord-message-handler** is a module written to simplify message and command handling for [discord.js](https://github.com/hydrabolt/discord.js) bots and applications.
 
