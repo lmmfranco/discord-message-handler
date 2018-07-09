@@ -3,11 +3,6 @@
 //   ../discord.js
 
 declare module 'discord-message-handler' {
-    import { MessageHandler } from 'discord-message-handler/message-handler';
-    export = MessageHandler;
-}
-
-declare module 'discord-message-handler/message-handler' {
     import * as Discord from "discord.js";
     import { HandlerBuilder } from "discord-message-handler/handler-builder";
     export class MessageHandler {

@@ -118,20 +118,10 @@ exports.Utils = Utils;
 
 "use strict";
 
-const message_handler_1 = __webpack_require__(2);
-module.exports = message_handler_1.MessageHandler;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 Object.defineProperty(exports, "__esModule", { value: true });
-const handler_builder_1 = __webpack_require__(3);
+const handler_builder_1 = __webpack_require__(2);
 const utils_1 = __webpack_require__(0);
-const action_executor_1 = __webpack_require__(4);
+const action_executor_1 = __webpack_require__(3);
 class MessageHandler {
     constructor() {
         this.handlers = [];
@@ -259,7 +249,7 @@ exports.MessageHandler = MessageHandler;
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -323,7 +313,7 @@ exports.HandlerBuilder = HandlerBuilder;
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
