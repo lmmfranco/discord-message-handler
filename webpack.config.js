@@ -3,6 +3,7 @@ const DtsBundleWebpack = require('dts-bundle-webpack');
 
 module.exports = {
   entry: './src/index.ts',
+  mode: 'production',
   module: {
     rules: [
       {
@@ -17,15 +18,16 @@ module.exports = {
   },
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, './dist'),
+    libraryTarget: 'commonjs2',
   },
   plugins: [
     new DtsBundleWebpack({
-        name: "discord-message-handler",
-        main: './dist/index.d.ts',
-        out: '../dist/index.d.ts',
-        removeSource: true,
-        outputAsModuleFolder: false
-      })
+      name: "discord-message-handler",
+      main: './dist/src/index.d.ts',
+      out: '../index.d.ts',
+      removeSource: true,
+      outputAsModuleFolder: false
+    })    
   ]
 };

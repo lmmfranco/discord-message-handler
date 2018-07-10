@@ -1,21 +1,19 @@
-import * as Discord from "discord.js";
-import { SimpleCallback } from "./simple-callback";
-import { CommandCallback } from "./command-callback";
+import { SimpleCallback, CommandCallback } from "./callbacks";
 import { ActionType } from "./utils";
 
 export class HandlerConfig {
     public type: number;
-    public query: string;
+    public query: string | string[];
     public action: number;
     public actionArgs: any[];
     public callback: SimpleCallback | CommandCallback;
-    public aliases: string;
+    public aliases: string[];
     public minArgs: number;
     public errorMessage: string;
 }
 
 export class HandlerBuilder {
-    public handler;
+    public handler: HandlerConfig;
 
     constructor() {
         this.handler = new HandlerConfig();

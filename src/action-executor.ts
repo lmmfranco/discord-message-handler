@@ -1,12 +1,11 @@
-import * as Discord from "discord.js";
+import { Message } from "discord.js";
 import { Utils } from "./utils";
-import { SimpleCallback } from "./simple-callback";
-import { CommandCallback } from "./command-callback";
+import { SimpleCallback, CommandCallback } from "./callbacks";
 
 export class ActionExecutor {
     
     constructor(
-        private discordMessage: Discord.Message
+        private discordMessage: Message
     ) { }
 
     public replySameChannel(text: string) {

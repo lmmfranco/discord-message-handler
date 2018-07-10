@@ -35,7 +35,7 @@ export class Utils {
             ((str.length > search.length) && (str.startsWith(search + ' ')))
     }
 
-    static getKeyByValue(obj: Object, value: any) {
+    static getKeyByValue(obj: any, value: any) {
         for (var prop in obj) {
             if (obj.hasOwnProperty(prop)) {
                 if (obj[prop] === value)

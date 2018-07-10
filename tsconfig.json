@@ -3,7 +3,10 @@
       "module": "commonjs",
       "target": "es6",
       "declaration": true,
-      "outDir": "../dist/",
-      "types": ["node"]
+      "strict": true,
+      "strictPropertyInitialization": false,
+      "types": [
+        "node"
+      ]
     }
 }

@@ -1,21 +1,20 @@
 // import { MessageHandler } from './message-handler';
 // export = MessageHandler;
-import * as Discord from "discord.js";
+import { Message } from "discord.js";
 import { HandlerBuilder, HandlerConfig } from "./handler-builder";
 import { Utils, MessageType, ActionType } from "./utils";
 import { ActionExecutor } from "./action-executor";
-import { SimpleCallback } from "./simple-callback";
-import { CommandCallback } from "./command-callback";
+import { SimpleCallback, CommandCallback } from "./callbacks";
 
 export class MessageHandler {
 
     private handlers: HandlerBuilder[] = [];
     private caseSensitive: boolean = false;
-    private logFn: Function = null;
+    private logFn: Function | null = null;
 
     constructor() {}
 
-    log(messageType: number, filter: string, message: Discord.Message) {
+    log(messageType: number, filter: string, message: Message) {
         let msgType = Utils.getKeyByValue(MessageType, messageType);
 
         if (this.logFn && typeof this.logFn == "function") {
@@ -74,7 +73,7 @@ export class MessageHandler {
         return builder;
     }
 
-    handleMessage(discordMessage: Discord.Message) {
+    handleMessage(discordMessage: Message) {
         let messageRaw = discordMessage.content;
 
         this.handlers
@@ -100,7 +99,7 @@ export class MessageHandler {
                     case MessageType.MESSAGE_CONTAINS:
                         return message.includes(query as string);
                     case MessageType.MESSAGE_CONTAINS_EXACT:
-                        return messageRaw.includes(handler.query);
+                        return messageRaw.includes(handler.query as string);
                     case MessageType.MESSAGE_CONTAINS_WORD:
                         return message.split(" ").indexOf(query as string) >= 0;
                     case MessageType.MESSAGE_CONTAINS_ONE:
@@ -108,7 +107,7 @@ export class MessageHandler {
                     case MessageType.MESSAGE_STARTS_WITH:
                     case MessageType.COMMAND:
                         if (handler.aliases) {
-                            handler.aliases.push(query);
+                            handler.aliases.push(query as string);
                             let check = handler.aliases.map(q => Utils.startsWithWord(message, q));
                             return check.reduce((a, b) => a || b);
                         } else {
@@ -121,7 +120,7 @@ export class MessageHandler {
                 }
             })
             .forEach((handler: HandlerConfig) => {
-                this.log(handler.type, handler.query, discordMessage);
+                this.log(handler.type, handler.query.toString(), discordMessage);
                 let executor = new ActionExecutor(discordMessage);
 
                 switch (handler.action) {
@@ -147,3 +146,5 @@ export class MessageHandler {
 
     }
 }
+// export = MessageHandler;
+console.log("carregou message handler 99");
