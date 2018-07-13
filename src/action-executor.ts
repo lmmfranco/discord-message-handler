@@ -9,7 +9,7 @@ export class ActionExecutor {
     ) { }
 
     public replySameChannel(text: string) {
-        this.discordMessage.channel.sendMessage(text);
+        this.discordMessage.channel.send(text);
     }
 
     public reply(args: string[]) {

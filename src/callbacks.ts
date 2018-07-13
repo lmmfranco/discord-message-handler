@@ -7,3 +7,7 @@ export interface SimpleCallback {
 export interface CommandCallback {
     (args: string[], rawArgs: string, message: Message): void;
 }
+
+export interface LogCallback {
+    (messageType: string, filter: string, message: Message): void;
+}

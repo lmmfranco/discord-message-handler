@@ -1,24 +1,28 @@
-// import { MessageHandler } from './message-handler';
-// export = MessageHandler;
 import { Message } from "discord.js";
 import { HandlerBuilder, HandlerConfig } from "./handler-builder";
 import { Utils, MessageType, ActionType } from "./utils";
 import { ActionExecutor } from "./action-executor";
-import { SimpleCallback, CommandCallback } from "./callbacks";
+import { SimpleCallback, CommandCallback, LogCallback } from "./callbacks";
 
 export class MessageHandler {
 
     private handlers: HandlerBuilder[] = [];
     private caseSensitive: boolean = false;
-    private logFn: Function | null = null;
+    private logFn: LogCallback | null = null;
 
-    constructor() {}
+    constructor(context?: MessageHandler) {
+        if (context) {
+            this.handlers = context.handlers;
+            this.caseSensitive = context.caseSensitive;
+            this.logFn = context.logFn;
+        }
+    }
 
     log(messageType: number, filter: string, message: Message) {
-        let msgType = Utils.getKeyByValue(MessageType, messageType);
+        const msgType = Utils.getKeyByValue(MessageType, messageType);
 
         if (this.logFn && typeof this.logFn == "function") {
-            this.logFn(msgType, filter, message);
+            this.logFn(msgType as string, filter, message);
         }
     }
 
@@ -26,55 +30,55 @@ export class MessageHandler {
         this.caseSensitive = isCaseSensitive;
     }
 
-    enableLogging(logFn: Function) {
+    enableLogging(logFn: LogCallback) {
         this.logFn = logFn;
     }
 
     whenMessageContains(text: string) {
-        let builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS).query(text);
+        const builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS).query(text);
         this.handlers.push(builder);
         return builder;
     }
 
     whenMessageContainsExact(text: string) {
-        let builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS_EXACT).query(text);
+        const builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS_EXACT).query(text);
         this.handlers.push(builder);
         return builder;
     }
 
     whenMessageContainsWord(text: string) {
-        let builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS_WORD).query(text);
+        const builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS_WORD).query(text);
         this.handlers.push(builder);
         return builder;
     }
 
     whenMessageContainsOne(array: string[]) {
-        let builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS_ONE).query(array);
+        const builder = new HandlerBuilder().type(MessageType.MESSAGE_CONTAINS_ONE).query(array);
         this.handlers.push(builder);
         return builder;
     }
 
     whenMessageStartsWith(text: string) {
-        let builder = new HandlerBuilder().type(MessageType.MESSAGE_STARTS_WITH).query(text);
+        const builder = new HandlerBuilder().type(MessageType.MESSAGE_STARTS_WITH).query(text);
         this.handlers.push(builder);
         return builder;
     }
 
 
     whenMessageEndsWith(text: string) {
-        let builder = new HandlerBuilder().type(MessageType.MESSAGE_ENDS_WITH).query(text);
+        const builder = new HandlerBuilder().type(MessageType.MESSAGE_ENDS_WITH).query(text);
         this.handlers.push(builder);
         return builder;
     }
 
     onCommand(text: string) {
-        let builder = new HandlerBuilder().type(MessageType.COMMAND).query(text);
+        const builder = new HandlerBuilder().type(MessageType.COMMAND).query(text);
         this.handlers.push(builder);
         return builder;
     }
 
     handleMessage(discordMessage: Message) {
-        let messageRaw = discordMessage.content;
+        const messageRaw = discordMessage.content;
 
         this.handlers
             .map(builder => builder.handler)
@@ -123,28 +127,50 @@ export class MessageHandler {
                 this.log(handler.type, handler.query.toString(), discordMessage);
                 let executor = new ActionExecutor(discordMessage);
 
-                switch (handler.action) {
-                    case ActionType.REPLY:
-                        executor.reply(handler.actionArgs);
-                        break;
-                    case ActionType.REPLY_SOMETIMES:
-                        executor.replySometimes(handler.actionArgs);
-                        break;
-                    case ActionType.REPLY_ONE:
-                        executor.replyOne(handler.actionArgs);
-                        break;
-                    case ActionType.THEN:
-                        executor.then(handler.callback as SimpleCallback);
-                        break;
-                    case ActionType.DO:
-                        executor.do(handler.callback as CommandCallback, handler.minArgs, handler.errorMessage);
-                        break;
-                    default:
-                        break;
+                if(this.checkChance(handler)) {
+                    switch (handler.action) {
+                        case ActionType.REPLY:
+                            executor.reply(handler.actionArgs);
+                            break;
+                        case ActionType.REPLY_SOMETIMES:
+                            executor.replySometimes(handler.actionArgs);
+                            break;
+                        case ActionType.REPLY_ONE:
+                            executor.replyOne(handler.actionArgs);
+                            break;
+                        case ActionType.THEN:
+                            executor.then(handler.callback as SimpleCallback);
+                            break;
+                        case ActionType.DO:
+                            executor.do(handler.callback as CommandCallback, handler.minArgs, handler.errorMessage);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    this.checkDeletion(handler, discordMessage);
+                } else {
+                    this.log(MessageType.CANCELLED, "Action failed the 'sometimes' chance.", discordMessage);
                 }
+
             });
 
     }
+
+    private checkChance(handler: HandlerConfig) {
+        if (handler && handler.chance) {
+            return Utils.random(1, 100) <= handler.chance;
+        } else {
+            return true;
+        }
+    }
+
+    private checkDeletion(handler: HandlerConfig, message: Message) {
+        if (handler.deleteTimer != null) {
+            setTimeout(() => {
+                message.delete();
+            }, handler.deleteTimer);
+        }
+    }
+
 }
-// export = MessageHandler;
-console.log("carregou message handler 99");

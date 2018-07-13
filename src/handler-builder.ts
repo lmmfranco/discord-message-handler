@@ -10,6 +10,8 @@ export class HandlerConfig {
     public aliases: string[];
     public minArgs: number;
     public errorMessage: string;
+    public chance: number;
+    public deleteTimer: number;
 }
 
 export class HandlerBuilder {
@@ -34,6 +36,9 @@ export class HandlerBuilder {
         this.handler.actionArgs = [text];
     }
 
+    /**
+     * @deprecated Use `sometimes(chance)` instead.
+     */
     replySometimes(text: string, chance: number) {
         this.handler.action = ActionType.REPLY_SOMETIMES;
         this.handler.actionArgs = [text, chance];
@@ -70,6 +75,20 @@ export class HandlerBuilder {
 
     whenInvalid(message: string) {
         this.handler.errorMessage = message;
+        return this;
+    }
+
+    sometimes(chance: number) {
+        this.handler.chance = chance;
+        return this;
+    }
+
+    /**
+     * Delete the message that triggered this command
+     * @param time Time in milliseconds
+     */
+    deleteInvocation(time?: number) {
+        this.handler.deleteTimer = time || 0;
         return this;
     }
 }

@@ -3,7 +3,8 @@ const DtsBundleWebpack = require('dts-bundle-webpack');
 
 module.exports = {
   entry: './src/index.ts',
-  mode: 'production',
+  mode: 'development',
+  devtool: "inline-source-map",
   module: {
     rules: [
       {

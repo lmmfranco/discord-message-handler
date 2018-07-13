@@ -1,4 +1,5 @@
 export const MessageType = {
+    CANCELLED: -1,
     MESSAGE_CONTAINS: 0,
     MESSAGE_CONTAINS_EXACT: 1,
     MESSAGE_CONTAINS_WORD: 2,
@@ -35,12 +36,13 @@ export class Utils {
             ((str.length > search.length) && (str.startsWith(search + ' ')))
     }
 
-    static getKeyByValue(obj: any, value: any) {
-        for (var prop in obj) {
+    static getKeyByValue<T>(obj: any, value: T) {
+        for (let prop in obj) {
             if (obj.hasOwnProperty(prop)) {
                 if (obj[prop] === value)
                     return prop;
             }
         }
+        return null;
     }
 }
