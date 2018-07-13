@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es6",
+      "declaration": true,
+      "strict": true,
+      "strictPropertyInitialization": false,
+      "types": [
+        "node"
+      ]
+    }
+}

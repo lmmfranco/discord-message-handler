@@ -1,10 +1,9 @@
 {
   "name": "discord-message-handler",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Message and command handler for discord.js bots and applications.",
-  "main": "./src/index",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && webpack && rm -rf dist/src"
   },
   "repository": {
     "type": "git",
@@ -23,5 +22,18 @@
   "bugs": {
     "url": "https://github.com/lmmfranco/discord-message-handler/issues"
   },
-  "homepage": "https://github.com/lmmfranco/discord-message-handler#readme"
+  "homepage": "https://github.com/lmmfranco/discord-message-handler#readme",
+  "devDependencies": {
+    "dts-bundle-webpack": "^1.0.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^2.9.2",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@types/node": "^8.5.7",
+    "discord.js": "^11.2.1"
+  }
 }
