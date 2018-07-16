@@ -1,6 +1,6 @@
 {
   "name": "discord-message-handler",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Message and command handler for discord.js bots and applications.",
   "scripts": {
     "build": "rm -rf dist && webpack && rm -rf dist/src"

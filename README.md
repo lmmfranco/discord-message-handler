@@ -102,9 +102,11 @@ module.exports.setup = function(handler) {
 
 helper.js:
 ```js
+const { MessageHandler } = require('discord-message-handler');
+
 module.exports.setup = function(handler) {
     /* [Optional] You can recreate the handler using the parent context so your IDE will properly give out suggestions for the handler */
-    myhandler = new MessageHandler(hanler);
+    const myhandler = new MessageHandler(handler);
     myhandler.whenMessageContainsWord("hey").reply("yo!");
     myhandler.whenMessageContainsWord("hi").reply("oh hi there :)");
 }
