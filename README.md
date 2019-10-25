@@ -62,6 +62,7 @@ handler.onCommand("/information").alias("/info").alias("/i").do((args) => {
 ```
 
 ### Commands with usage info
+
 ```js
 handler 
     .onCommand("/info")
@@ -71,6 +72,23 @@ handler
         doSomething(args[0]);
         doSomethingElse(args[1]);
     });
+```
+
+### Commands with usage info and regex matching with a boolean return
+In the example is a regular expression i made for validating a command when my chatbot should start a raid.
+This is for my local pokemon go community. 
+The full command could be '!raid start T5 somewhere in a tree' or '!raid start T3 StatueofJezus 22:00' 
+Works in combination with minArgs 
+
+```js
+handler
+    .onCommand("!raid")
+    .minArgs(5)
+    .matches("(start\\s)([Tt])([1-5]{1})(( \\w+){1,4}\\s)(0{2}|([0-9]|1[0-9]|2[0-3]))(\\:)(0{2}|([0-5][0-9]))")
+    .whenInvalid("Invalid command. Usage: !raid start <T1-5> <1-4 words describing place / area> <24h-time>")
+    .do((args: string[], rawArgs: string, message: Message) => {
+        doSomething(args);
+    })
 ```
 
 ### Command invocation deletion
