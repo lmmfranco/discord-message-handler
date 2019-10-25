@@ -62,7 +62,6 @@ handler.onCommand("/information").alias("/info").alias("/i").do((args) => {
 ```
 
 ### Commands with usage info
-
 ```js
 handler 
     .onCommand("/info")
