@@ -69,7 +69,7 @@ handler.whenMessageStartsWith("help").then(message => doSomething(message));
 ### Command handler
 ```js
 handler.onCommand("/doit").do((args, rawArgs, message) => {
-    message.channel.sendMessage(`Doing something for ${message.author}...`)
+    message.channel.send(`Doing something for ${message.author}...`)
 });
 ```
 
