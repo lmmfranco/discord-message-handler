@@ -30,7 +30,7 @@ export class ActionExecutor {
         callback(this.discordMessage);
     }
 
-    public do(callback: CommandCallback, minArgs: number, regEx: string, errorMessage: string) {
+    public do(callback: CommandCallback, minArgs: number, regEx: string | RegExp, errorMessage: string) {
         var minimumArgs = minArgs || 0;
         var regExPattern = regEx || "";
         let args = this.discordMessage.content.trim().split(" ");
