@@ -1,6 +1,6 @@
 {
   "name": "discord-message-handler",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Message and command handler for discord.js bots and applications.",
   "scripts": {
     "docs": "markdown-toc README.md -i",
