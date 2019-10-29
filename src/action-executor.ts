@@ -30,16 +30,17 @@ export class ActionExecutor {
         callback(this.discordMessage);
     }
 
-    public do(callback: CommandCallback, minArgs: number, errorMessage: string) {
+    public do(callback: CommandCallback, minArgs: number, regEx: string | RegExp, errorMessage: string) {
         var minimumArgs = minArgs || 0;
+        var regExPattern = regEx || "";
         let args = this.discordMessage.content.trim().split(" ");
 
         // Remove command from args
         args.splice(0, 1);
 
         let rawArgs = args.join(" ");
-
-        if (args.length < minimumArgs && errorMessage) {
+        let pattern = new RegExp(regExPattern)
+        if ((args.length < minimumArgs || !pattern.test(rawArgs)) && errorMessage) {
             this.replySameChannel(errorMessage);
         } else {
             callback(args, rawArgs, this.discordMessage);

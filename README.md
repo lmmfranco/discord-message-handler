@@ -4,7 +4,26 @@
 </p>
 
 ## About
-**discord-message-handler** is a module written to simplify message and command handling for [discord.js](https://github.com/hydrabolt/discord.js) bots and applications.
+**discord-message-handler** is a module written to simplify message and command handling for [discord.js](https://github.com/discordjs/discord.js) bots and applications.
+
+## Table of Contents
+
+<!-- toc -->
+
+- [Installation](#installation)
+- [Usage](#usage)
+  * [Simple message handlers](#simple-message-handlers)
+  * [Command handler](#command-handler)
+  * [Commands with alias](#commands-with-alias)
+  * [Commands with usage info](#commands-with-usage-info)
+  * [Commands with regex validation](#commands-with-regex-validation)
+  * [Command invocation deletion](#command-invocation-deletion)
+  * [Example handling messages across multiple files](#example-handling-messages-across-multiple-files)
+  * [Case sensitivity](#case-sensitivity)
+  * [Logging](#logging)
+- [Contributing](#contributing)
+
+<!-- tocstop -->
 
 ## Installation
 Simply navigate to your project's folder and type `npm install discord-message-handler --save` on the command line.
@@ -50,7 +69,7 @@ handler.whenMessageStartsWith("help").then(message => doSomething(message));
 ### Command handler
 ```js
 handler.onCommand("/doit").do((args, rawArgs, message) => {
-    message.channel.sendMessage(`Doing something for ${message.author}...`)
+    message.channel.send(`Doing something for ${message.author}...`)
 });
 ```
 
@@ -71,6 +90,18 @@ handler
         doSomething(args[0]);
         doSomethingElse(args[1]);
     });
+```
+
+### Commands with regex validation
+```js
+handler
+    .onCommand("!roll")
+    .minArgs(1)
+    .matches(/(\d+)?\s?d(6|20|100)/g)
+    .whenInvalid("Invalid command. Usage: `!roll <number of dices> d<type of dice>`. Valid dices: d6, d20, d100")
+    .do((args) => {
+        // Dice roll logic
+    })
 ```
 
 ### Command invocation deletion

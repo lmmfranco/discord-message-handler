@@ -1,8 +1,9 @@
 {
   "name": "discord-message-handler",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Message and command handler for discord.js bots and applications.",
   "scripts": {
+    "docs": "markdown-toc README.md -i",
     "build": "rm -rf dist && webpack && rm -rf dist/src"
   },
   "repository": {
@@ -25,6 +26,7 @@
   "homepage": "https://github.com/lmmfranco/discord-message-handler#readme",
   "devDependencies": {
     "dts-bundle-webpack": "^1.0.0",
+    "markdown-toc": "^1.2.0",
     "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
     "webpack": "^4.15.1",

@@ -9,6 +9,7 @@ export class HandlerConfig {
     public callback: SimpleCallback | CommandCallback;
     public aliases: string[];
     public minArgs: number;
+    public matches: string | RegExp;
     public errorMessage: string;
     public chance: number;
     public deleteTimer: number;
@@ -59,6 +60,10 @@ export class HandlerBuilder {
         this.handler.callback = callback;
     }
 
+    matches(regex: string | RegExp) {
+        this.handler.matches = regex
+        return this;
+    }
     minArgs(count: number) {
         this.handler.minArgs = count;
         return this;
