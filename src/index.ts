@@ -142,7 +142,7 @@ export class MessageHandler {
                             executor.then(handler.callback as SimpleCallback);
                             break;
                         case ActionType.DO:
-                            executor.do(handler.callback as CommandCallback, handler.minArgs, handler.errorMessage);
+                            executor.do(handler.callback as CommandCallback, handler.minArgs, handler.matches, handler.errorMessage);
                             break;
                         default:
                             break;
