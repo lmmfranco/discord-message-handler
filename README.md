@@ -4,7 +4,26 @@
 </p>
 
 ## About
-**discord-message-handler** is a module written to simplify message and command handling for [discord.js](https://github.com/hydrabolt/discord.js) bots and applications.
+**discord-message-handler** is a module written to simplify message and command handling for [discord.js](https://github.com/discordjs/discord.js) bots and applications.
+
+## Table of Contents
+
+<!-- toc -->
+
+- [Installation](#installation)
+- [Usage](#usage)
+  * [Simple message handlers](#simple-message-handlers)
+  * [Command handler](#command-handler)
+  * [Commands with alias](#commands-with-alias)
+  * [Commands with usage info](#commands-with-usage-info)
+  * [Commands with regex validation](#commands-with-regex-validation)
+  * [Command invocation deletion](#command-invocation-deletion)
+  * [Example handling messages across multiple files](#example-handling-messages-across-multiple-files)
+  * [Case sensitivity](#case-sensitivity)
+  * [Logging](#logging)
+- [Contributing](#contributing)
+
+<!-- tocstop -->
 
 ## Installation
 Simply navigate to your project's folder and type `npm install discord-message-handler --save` on the command line.
@@ -73,20 +92,15 @@ handler
     });
 ```
 
-### Commands with usage info and regex matching with a boolean return
-In the example is a regular expression i made for validating a command when my chatbot should start a raid.
-This is for my local pokemon go community. 
-The full command could be '!raid start T5 somewhere in a tree' or '!raid start T3 StatueofJezus 22:00' 
-Works in combination with minArgs 
-
+### Commands with regex validation
 ```js
 handler
-    .onCommand("!raid")
-    .minArgs(5)
-    .matches("(start\\s)([Tt])([1-5]{1})(( \\w+){1,4}\\s)(0{2}|([0-9]|1[0-9]|2[0-3]))(\\:)(0{2}|([0-5][0-9]))")
-    .whenInvalid("Invalid command. Usage: !raid start <T1-5> <1-4 words describing place / area> <24h-time>")
-    .do((args: string[], rawArgs: string, message: Message) => {
-        doSomething(args);
+    .onCommand("!roll")
+    .minArgs(1)
+    .matches(/(\d+)?\s?d(6|20|100)/g)
+    .whenInvalid("Invalid command. Usage: `!roll <number of dices> d<type of dice>`. Valid dices: d6, d20, d100")
+    .do((args) => {
+        // Dice roll logic
     })
 ```
 
