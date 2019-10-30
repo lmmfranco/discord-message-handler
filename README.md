@@ -1,6 +1,7 @@
 <p>
     <a href="https://www.npmjs.com/package/discord-message-handler"><img src="https://img.shields.io/npm/v/discord-message-handler.svg?maxAge=3600" alt="NPM version" /></a>
     <a href="https://www.npmjs.com/package/discord-message-handler"><img src="https://img.shields.io/npm/dt/discord-message-handler.svg?maxAge=3600" alt="NPM downloads" /></a>
+    <a href="https://circleci.com/gh/lmmfranco/discord-message-handler/tree/master"><img src="https://img.shields.io/circleci/project/github/lmmfranco/discord-message-handler/master.svg?style=flat-square" alt="Build Status" title="Build Status" /></a>
 </p>
 
 ## About
