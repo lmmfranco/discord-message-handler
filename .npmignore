@@ -1,4 +1,5 @@
 src/
 tests/
+.circleci/
 tsconfig.json
 webpack.config.js
