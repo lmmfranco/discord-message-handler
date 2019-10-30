@@ -33,14 +33,14 @@
     "rimraf": "^3.0.0",
     "ts-jest": "^24.1.0",
     "ts-loader": "^6.2.1",
-    "typescript": "^2.9.2",
+    "typescript": "^3.6.4",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@types/node": "^8.5.7",
+    "@types/node": "^12.12.3",
     "discord.js": "^11.2.1"
   }
 }
