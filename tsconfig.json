@@ -8,6 +8,9 @@
       "types": [
         "node",
         "jest"
-      ]
-    }
+      ],
+    },
+    "exclude": [
+      "tests"
+    ]
 }
