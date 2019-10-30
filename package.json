@@ -3,6 +3,7 @@
   "version": "2.1.0",
   "description": "Message and command handler for discord.js bots and applications.",
   "scripts": {
+    "test": "jest",
     "docs": "markdown-toc README.md -i",
     "build": "rm -rf dist && webpack && rm -rf dist/src"
   },
@@ -25,8 +26,11 @@
   },
   "homepage": "https://github.com/lmmfranco/discord-message-handler#readme",
   "devDependencies": {
+    "@types/jest": "^24.0.21",
     "dts-bundle-webpack": "^1.0.0",
+    "jest": "^24.9.0",
     "markdown-toc": "^1.2.0",
+    "ts-jest": "^24.1.0",
     "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
     "webpack": "^4.15.1",
