@@ -3,7 +3,7 @@
   "version": "2.1.1",
   "description": "Message and command handler for discord.js bots and applications.",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "docs": "markdown-toc README.md -i",
     "build": "rimraf dist && webpack && rimraf dist/src"
   },
