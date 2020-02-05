@@ -18,6 +18,7 @@
   * [Commands with alias](#commands-with-alias)
   * [Commands with usage info](#commands-with-usage-info)
   * [Commands with regex validation](#commands-with-regex-validation)
+  * [Commands with multiple validations](#commands-with-multiple-validations)
   * [Command invocation deletion](#command-invocation-deletion)
   * [Example handling messages across multiple files](#example-handling-messages-across-multiple-files)
   * [Case sensitivity](#case-sensitivity)
@@ -105,16 +106,15 @@ handler
     })
 ```
 
-### Commands with channel validation 
-### Also with multiple error messages
+### Commands with multiple validations
 
 In this version, you can chain commands and give whenInvalid an object with multiple parameters.
-They will be validate in the following order:
+They will be validated in the following order:
     1. allowedChannels
     2. minimumArguments
     3. regularExpression
 
-You can also pass in a boolean when you want to send it to a user or a channel. Standard will be a reply in the channel.
+You can also pass in a flag when you want to send it to a user or a channel. Standard will be a reply in the channel.
 
 
 ```js
