@@ -1,5 +1,6 @@
 import { SimpleCallback, CommandCallback } from "./callbacks";
 import { ActionType } from "./utils";
+import { ErrorMessage } from "./action-executor";
 
 export class HandlerConfig {
     public type: number;
@@ -10,7 +11,8 @@ export class HandlerConfig {
     public aliases: string[];
     public minArgs: number;
     public matches: string | RegExp;
-    public errorMessage: string;
+    public allowedChannels: string[];
+    public errorMessage: ErrorMessage | string;
     public chance: number;
     public deleteTimer: number;
 }
@@ -60,14 +62,21 @@ export class HandlerBuilder {
         this.handler.callback = callback;
     }
 
-    matches(regex: string | RegExp) {
-        this.handler.matches = regex
-        return this;
-    }
     minArgs(count: number) {
         this.handler.minArgs = count;
         return this;
     }
+
+    matches(regex: string | RegExp) {
+        this.handler.matches = regex;
+        return this;
+    }
+
+    allowedChannels(channelIds: string[]) {
+        this.handler.allowedChannels = channelIds;
+        return this;
+    }
+    
 
     alias(alt: string) {
         if (this.handler.aliases) {
@@ -78,7 +87,7 @@ export class HandlerBuilder {
         return this;
     }
 
-    whenInvalid(message: string) {
+    whenInvalid(message: ErrorMessage | string) {
         this.handler.errorMessage = message;
         return this;
     }

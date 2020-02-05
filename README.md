@@ -105,6 +105,34 @@ handler
     })
 ```
 
+### Commands with channel validation 
+### Also with multiple error messages
+
+In this version, you can chain commands and give whenInvalid an object with multiple parameters.
+They will be validate in the following order:
+    1. allowedChannels
+    2. minimumArguments
+    3. regularExpression
+
+You can also pass in a boolean when you want to send it to a user or a channel. Standard will be a reply in the channel.
+
+
+```js
+handler
+    .onCommand("!roll")
+    .minArgs(1)
+    .matches(/(\d+)?\s?d(6|20|100)/g)
+    .allowedChannels(["45054768187"])
+    .whenInvalid({
+        sendToPlayer: true, 
+        allowedChannels: "You are not allowed to use that in this channel.",
+        minimumArgs: "Did you forget something?",
+        regexPattern: "Please check your input."})
+    .do((args) => {
+        // Dice roll logic
+    })
+```
+
 ### Command invocation deletion
 You can automatically delete the message that triggered a command using the `deleteInvocation` method. The time argument is optional, and if absent the message will be deleted imediatelly.
 ```js

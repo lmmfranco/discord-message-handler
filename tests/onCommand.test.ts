@@ -1,5 +1,7 @@
 import { MessageHandler } from "../src";
 import { MessageMock } from "./__mocks__/message-mock";
+import { ChannelMock } from "./__mocks__/channel-mock";
+import { UserMock } from "./__mocks__/user-mock";
 
 jest.useFakeTimers();
 
@@ -51,7 +53,7 @@ describe("MessageHandler.onCommand test", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").minArgs(1).whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").minArgs(1).whenInvalid("To few arguments.").do(callback)
 
         // When
         const message = new MessageMock("!foo bar");
@@ -64,7 +66,7 @@ describe("MessageHandler.onCommand test", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").minArgs(1).whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").minArgs(1).whenInvalid({ replyToUser: false, minimumArgs: "warning" }).do(callback)
 
         // When
         const message = new MessageMock("!foo");
@@ -77,7 +79,7 @@ describe("MessageHandler.onCommand test", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").minArgs(1).whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").minArgs(1).whenInvalid({ replyToUser: false, minimumArgs: "warning" }).do(callback)
 
         // When
         const message = new MessageMock("!foo");
@@ -90,7 +92,7 @@ describe("MessageHandler.onCommand test", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").matches("\\d \\d").whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").matches("\\d \\d").whenInvalid({ replyToUser: false, regexPattern: "warning" }).do(callback)
 
         // When
         const message = new MessageMock("!foo 2 4");
@@ -103,7 +105,7 @@ describe("MessageHandler.onCommand test", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").matches(/\d \d/).whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").matches(/\d \d/).whenInvalid({ replyToUser: false, regexPattern: "warning" }).do(callback)
 
         // When
         const message = new MessageMock("!foo 2 4");
@@ -112,14 +114,45 @@ describe("MessageHandler.onCommand test", () => {
         // Then
         expect(callback).toHaveBeenCalled();
     });
+    test("onCommand should not fire on match success with regex pattern but channel not in allowedChannels", () => {
+        // Given
+        const handler = new MessageHandler();
+        const callback = jest.fn()
+        handler.onCommand("!foo").matches(/\d \d/).allowedChannels(["123456789"]).whenInvalid({ replyToUser: false, allowedChannels: "warning" }).do(callback)
+
+        // When
+        const message = new MessageMock("!foo 2 4");
+        const channel = new ChannelMock("987654321")
+        message.channel = channel
+        handler.handleMessage(message);
+
+        // Then
+        expect(callback).toHaveBeenCalledTimes(0);
+    });
+    test("onCommand should not fire on match success with regex pattern but channel not in allowedChannels", () => {
+        // Given
+        const handler = new MessageHandler();
+        const callback = jest.fn()
+        handler.onCommand("!foo").matches(/\d \d/).allowedChannels(["123456789"]).whenInvalid({ replyToUser: false, allowedChannels: "warning" }).do(callback)
+
+        // When
+        const message = new MessageMock("!foo 2 4");
+        const channel = new ChannelMock("987654321")
+        message.channel = channel
+        handler.handleMessage(message);
+
+        // Then
+        expect(callback).toHaveBeenCalledTimes(0);
+    });
     test("onCommand should not fire on match fail with string pattern", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").matches("\\d \\d").whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").matches("\\d \\d").whenInvalid({ replyToUser: true, regexPattern: "warning" }).do(callback)
 
         // When
         const message = new MessageMock("!foo a b");
+        message.author = new UserMock();
         handler.handleMessage(message);
 
         // Then
@@ -129,7 +162,7 @@ describe("MessageHandler.onCommand test", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").matches(/\d \d/).whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").matches(/\d \d/).whenInvalid({ replyToUser: false, regexPattern: "warning" }).do(callback)
 
         // When
         const message = new MessageMock("!foo a b");
@@ -142,7 +175,7 @@ describe("MessageHandler.onCommand test", () => {
         // Given
         const handler = new MessageHandler();
         const callback = jest.fn()
-        handler.onCommand("!foo").matches(/\d \d/).whenInvalid("warning").do(callback)
+        handler.onCommand("!foo").matches(/\d \d/).whenInvalid({ replyToUser: false, regexPattern: "warning" }).do(callback)
 
         // When
         const message = new MessageMock("!foo a b");
@@ -167,4 +200,36 @@ describe("MessageHandler.onCommand test", () => {
         jest.advanceTimersByTime(waitTime);
         expect(message.delete).toHaveBeenCalled()
     });
+    test("onCommand should fire if channel does match allowedChannels ids", () => {
+        // Given
+        const handler = new MessageHandler();
+        const callback = jest.fn()
+        handler.onCommand("!foo").allowedChannels(["123456789"]).whenInvalid({ replyToUser: false, allowedChannels: "warning" }).do(callback)
+
+        // When
+        const message = new MessageMock("!foo bar");
+        const channel = new ChannelMock();
+        channel.id = "123456789";
+        message.channel = channel;
+        handler.handleMessage(message);
+
+        // Then
+        expect(callback).toHaveBeenCalled();
+    })
+    test("onCommand should not fire if channel does NOT match allowedChannels ids", () => {
+        // Given
+        const handler = new MessageHandler();
+        const callback = jest.fn()
+        handler.onCommand("!foo").allowedChannels(["123456789"]).whenInvalid({ replyToUser: false, allowedChannels: "warning" }).do(callback)
+
+        // When
+        const message = new MessageMock("!foo bar");
+        const channel = new ChannelMock();
+        channel.id = "987654321";
+        message.channel = channel;
+        handler.handleMessage(message);
+
+        // Then
+        expect(callback).toHaveBeenCalledTimes(0);
+    })
 });
