@@ -25,8 +25,8 @@ module.exports = {
   plugins: [
     new DtsBundleWebpack({
       name: "discord-message-handler",
-      main: './dist/src/index.d.ts',
-      out: '../index.d.ts',
+      main: './src/index.d.ts',
+      out: '../dist/index.d.ts',
       removeSource: true,
       outputAsModuleFolder: false
     })    
