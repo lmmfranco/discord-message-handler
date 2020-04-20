@@ -41,6 +41,6 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@types/node": "^13.7.0",
-    "discord.js": "^11.2.1"
+    "discord.js": "^12.2.0"
   }
 }
